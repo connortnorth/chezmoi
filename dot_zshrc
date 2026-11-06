@@ -202,3 +202,7 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
+# terminal-wakatime setup
+export PATH="$HOME/.wakatime:$PATH"
+eval "$(terminal-wakatime init)"
