@@ -84,6 +84,7 @@ alias ls='eza --group-directories-first --icons'
 alias lsa='eza --group-directories-first --icons -a'
 alias ll='eza -la --long --group --group-directories-first --icons --header --time-style "+%Y-%m-%d %I:%M %p"'
 alias lt='eza --group-directories-first --tree --icons'
+alias sd='shutdown -h now'
 
 wp() {
   # Display help
