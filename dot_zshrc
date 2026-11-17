@@ -72,19 +72,45 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
 alias pt='periodic-table-cli'
-alias ls='ls --color'
 alias c='clear'
 alias l='exit'
 alias ch='chezmoi'
-alias py='python'
+alias py='python3'
 hash -d wps=/home/conman/wallpapers
 alias rwp='wp r'
 alias ff='fastfetch'
-alias ls='eza --group-directories-first --icons'
-alias lsa='eza --group-directories-first --icons -a'
-alias ll='eza -la --long --group --group-directories-first --icons --header --time-style "+%Y-%m-%d %I:%M %p"'
-alias lt='eza --group-directories-first --tree --icons'
-alias sd='shutdown -h now'
+alias neo='neo -f 144 -S 40'
+
+list() {
+  local eza_opts=(--group-directories-first --icons)
+  local long_opts=(--long --group --header --time-style "+%Y-%m-%d %I:%M %p")
+  local args=()
+  local add_long=0 add_tree=0 parse_opts=1
+
+  for arg in "$@"; do
+    if (( parse_opts )) && [[ "$arg" == "--" ]]; then
+      parse_opts=0
+      args+=("$arg")
+    elif (( parse_opts )) && [[ "$arg" =~ ^-[^-]+$ ]]; then
+      [[ "$arg" == *l* ]] && add_long=1
+      [[ "$arg" == *t* ]] && add_tree=1
+      local rest="${arg//[lt]/}"
+      [[ "$rest" != "-" ]] && args+=("$rest")
+    else
+      args+=("$arg")
+    fi
+  done
+
+  (( add_long )) && eza_opts+=("${long_opts[@]}")
+  (( add_tree )) && eza_opts+=(--tree)
+
+  command eza "${eza_opts[@]}" "${args[@]}"
+}
+
+# Generate aliases for every combination of l (long), t (tree), and a (all)
+for flags in l t a lt tl la al ta at lta lat tla tal alt atl; do
+  alias "ls${flags}"="list -${flags}"
+done
 
 wp() {
   # Display help
